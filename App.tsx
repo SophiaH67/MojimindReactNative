@@ -3,9 +3,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useColorScheme} from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Game from './classes/game';
+import GameScreen from './screens/GameScreen';
 import HomeScreen from './screens/HomeScreen';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Game: {
+    game: Game;
+  };
+  Home: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -21,6 +30,7 @@ const App = () => {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_right',
         }}>
         <Stack.Screen
           name="Home"
@@ -28,6 +38,13 @@ const App = () => {
           options={{
             title: 'Games',
           }}
+        />
+        <Stack.Screen
+          name="Game"
+          component={GameScreen}
+          options={({ route }) => ({
+            title: `Game #${route.params.game.id}`,
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>
