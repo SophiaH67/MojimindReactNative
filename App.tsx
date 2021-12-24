@@ -1,27 +1,36 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  useColorScheme,
-} from 'react-native';
+import { useColorScheme} from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import HomeScreen from './screens/HomeScreen';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
-import GamesList from './components/gamesList';
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <GamesList />
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+          },
+          headerTintColor: isDarkMode ? '#fff' : '#000',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            title: 'Games',
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
