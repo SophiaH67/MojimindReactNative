@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ScrollView, Text, useColorScheme, View } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Game from "../classes/game";
+import EmojiPicker from "../components/emojiPicker";
 import GameRow from "../components/gameRow";
 
 type NavProps = NativeStackScreenProps<{
@@ -35,6 +36,7 @@ export default function GameScreen({ route, navigation }: NavProps) {
           <GameRow key={row.id} row={row} disabled={game.turn !== (11-i)} />
         ))}
       </View>
+      <EmojiPicker game={game} />
     </ScrollView>
   );
 }
