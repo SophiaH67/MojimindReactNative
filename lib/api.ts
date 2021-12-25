@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import Game from "../classes/game";
 import Slot from "../classes/slot";
 
@@ -9,17 +10,38 @@ export const getGame = async (id: number): Promise<Game> => {
   return new Game(gameDTO);
 }
 
+export const createGame = async (codeLength: number): Promise<Game> => {
+  const gameDTO = await fetch(`${API_BASE_URL}/api/games`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      code_length: codeLength
+    })
+  }).then(res => res.json());
+  await AsyncStorage.setItem(`Game${gameDTO.id}`, gameDTO.auth_token);
+  return new Game(gameDTO);
+}
+
 export const updateGame = async (game: Game): Promise<Game> => {
-  const gameDTO = await fetch(`${API_BASE_URL}/api/games/${game.id}`, {
+  console.log(`Updating game ${game.id} with emoji ${game.selected_emoji}`);
+  const res = await fetch(`${API_BASE_URL}/api/games/${game.id}`, {
     method: "PUT",
     headers: {
+      "Authorization": await AsyncStorage.getItem(`Game${game.id}`) || "",
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
       // We can only update the selected emoji, so there's no need to send the rest of the game.
       selected_emoji: game.selected_emoji,
     })
-  }).then(res => res.json());
+  });
+  // If the response is 401, the auth token is invalid. So we throw an error.
+  if (res.status === 401) {
+    throw new Error("Invalid auth token");
+  }
+  const gameDTO = await res.json();
   return new Game(gameDTO);
 }
 //#endregion
