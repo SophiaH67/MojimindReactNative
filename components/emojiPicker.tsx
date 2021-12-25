@@ -16,6 +16,9 @@ export default function EmojiPicker({ game }: Props) {
   // Remove the first element, which is the empty string
   emojiMapArray.shift();
 
+  const [, updateState] = React.useState({});
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+
   // A horizontal row of emoji slots(mapped from emojiMap)
   return (
     <ScrollView
@@ -30,7 +33,10 @@ export default function EmojiPicker({ game }: Props) {
       {emojiMapArray.map(([k, emoji], i) => (
         <TouchableOpacity
           key={i}
-          onPress={() => game.selected_emoji = i+1}>
+          onPress={() => {
+            game.selected_emoji = i+1;
+            forceUpdate();
+          }}>
           <Text
             style={{
               fontSize: 30,
