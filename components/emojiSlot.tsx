@@ -10,8 +10,16 @@ interface Props {
 }
 
 export default function EmojiSlot({ disabled, slot }: Props) {
+  const [, updateState] = React.useState({});
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={() => {
+        slot.value = slot.row.game.selected_emoji;
+        forceUpdate();
+      }}>
       <Text
         style={{
           fontSize: 30,

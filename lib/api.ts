@@ -51,6 +51,7 @@ export const updateSlot = async (slot: Slot): Promise<Slot> => {
   const slotDTO = await fetch(`${API_BASE_URL}/api/slots/${slot.id}`, {
     method: "PUT",
     headers: {
+      "Authorization": await AsyncStorage.getItem(`Game${slot.row.game.id}`) || "",
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
