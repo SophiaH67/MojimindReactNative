@@ -25,7 +25,6 @@ export const createGame = async (codeLength: number): Promise<Game> => {
 }
 
 export const updateGame = async (game: Game): Promise<Game> => {
-  console.log(`Updating game ${game.id} with emoji ${game.selected_emoji}`);
   const res = await fetch(`${API_BASE_URL}/api/games/${game.id}`, {
     method: "PUT",
     headers: {
