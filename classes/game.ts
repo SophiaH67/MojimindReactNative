@@ -1,10 +1,11 @@
 import GameDTO from "../interfaces/gameDTO";
 import { updateGame } from "../lib/api";
+import Row from "./row";
 
 export default class Game {
   id: number;
   code_length: number;
-  score: number;
+  score?: number;
   turn: number;
   _selected_emoji: number;
   won: boolean;
@@ -12,6 +13,7 @@ export default class Game {
   created_at: Date;
   updated_at: Date;
   user_id: number;
+  rows: Row[];
 
   constructor(gameDTO: GameDTO) {
     this.id = gameDTO.id;
@@ -24,6 +26,7 @@ export default class Game {
     this.created_at = new Date(gameDTO.created_at);
     this.updated_at = new Date(gameDTO.updated_at);
     this.user_id = gameDTO.user_id;
+    this.rows = gameDTO.rows.map(row => new Row(this, row));
   }
 
   get selected_emoji() {

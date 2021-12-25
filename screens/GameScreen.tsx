@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { Text, useColorScheme, View } from "react-native";
+import { ScrollView, Text, useColorScheme, View } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Game from "../classes/game";
+import GameRow from "../components/gameRow";
 
 type NavProps = NativeStackScreenProps<{
   game: {game: Game};
@@ -11,17 +12,29 @@ type NavProps = NativeStackScreenProps<{
 
 export default function GameScreen({ route, navigation }: NavProps) {
   const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
   
   const { game } = route.params as {game: Game};
   return (
-    <View style={backgroundStyle}>
+    <ScrollView
+      style={{
+        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+        height: '100%',
+      }}>
       <Text>Game #{game.id}</Text>
       <Text>Code Length: {game.code_length}</Text>
       <Text>Last Move: {game.updated_at.toLocaleDateString()}</Text>
-    </View>
+      {/* JSON dump of the game.rows */}
+      <View
+        style={{
+          backgroundColor: isDarkMode ? Colors.dark : Colors.light,
+          flexDirection: 'column',
+          // Center the rows vertically
+          alignItems: 'center',
+        }}>
+        {game.rows.map((row, i) => (
+          <GameRow key={row.id} row={row} disabled={game.turn !== (11-i)} />
+        ))}
+      </View>
+    </ScrollView>
   );
 }
