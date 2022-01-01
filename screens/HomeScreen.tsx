@@ -9,12 +9,12 @@ export default function HomeScreen () {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    height: '100%',
   };
 
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      {/* New game */}
       <NewGame />
       <GamesList />
     </SafeAreaView>
