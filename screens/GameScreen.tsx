@@ -6,6 +6,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import Game from "../classes/game";
 import EmojiPicker from "../components/emojiPicker";
 import GameRow from "../components/gameRow";
+import SubmitButton from "../components/submitButton";
 
 type NavProps = NativeStackScreenProps<{
   game: {game: Game};
@@ -37,6 +38,7 @@ export default function GameScreen({ route, navigation }: NavProps) {
         ))}
       </View>
       <EmojiPicker game={game} />
+      <SubmitButton game={game} />
     </ScrollView>
   );
 }
